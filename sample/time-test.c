@@ -55,7 +55,7 @@ timeout_cb(evutil_socket_t fd, short event, void *arg)
 	    (int)newtime.tv_sec, elapsed);
 	lasttime = newtime;
 
-	if (! event_is_persistent) {
+	if (!event_is_persistent) {
 		struct timeval tv;
 		evutil_timerclear(&tv);
 		tv.tv_sec = 2;
@@ -107,4 +107,3 @@ main(int argc, char **argv)
 
 	return (0);
 }
-
