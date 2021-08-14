@@ -82,6 +82,28 @@
                     "ignoreFailures": true
                 }
             ]
+        },
+        {
+            "name": "le-proxy (gdb) Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/bin/le-proxy",
+            "args": [
+                "0.0.0.0:8888",
+                "127.0.0.1:9981"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
         }
     ]
 }

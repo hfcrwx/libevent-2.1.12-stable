@@ -77,7 +77,7 @@ readcb(struct bufferevent *bev, void *ctx)
 }
 
 static void
-drained_writecb(struct bufferevent *bev, void *ctx)
+drained_writecb(struct bufferevent *bev, void *ctx) // MAX_OUTPUT/2
 {
 	struct bufferevent *partner = ctx;
 
@@ -90,7 +90,7 @@ drained_writecb(struct bufferevent *bev, void *ctx)
 }
 
 static void
-close_on_finished_writecb(struct bufferevent *bev, void *ctx)
+close_on_finished_writecb(struct bufferevent *bev, void *ctx) // 发完剩余数据
 {
 	struct evbuffer *b = bufferevent_get_output(bev);
 
@@ -163,11 +163,11 @@ accept_cb(struct evconnlistener *listener, evutil_socket_t fd,
 	/* Create two linked bufferevent objects: one to connect, one for the
 	 * new connection */
 	b_in = bufferevent_socket_new(base, fd,
-	    BEV_OPT_CLOSE_ON_FREE|BEV_OPT_DEFER_CALLBACKS);
+	    BEV_OPT_CLOSE_ON_FREE|BEV_OPT_DEFER_CALLBACKS); // client->proxy
 
 	if (!ssl_ctx || use_wrapper)
 		b_out = bufferevent_socket_new(base, -1,
-		    BEV_OPT_CLOSE_ON_FREE|BEV_OPT_DEFER_CALLBACKS);
+		    BEV_OPT_CLOSE_ON_FREE|BEV_OPT_DEFER_CALLBACKS); // proxy -> server
 	else {
 		SSL *ssl = SSL_new(ssl_ctx);
 		b_out = bufferevent_openssl_socket_new(base, -1, ssl,
@@ -244,7 +244,7 @@ main(int argc, char **argv)
 	socklen = sizeof(listen_on_addr);
 	if (evutil_parse_sockaddr_port(argv[i],
 		(struct sockaddr*)&listen_on_addr, &socklen)<0) {
-		int p = atoi(argv[i]);
+		int p = atoi(argv[i]); // port
 		struct sockaddr_in *sin = (struct sockaddr_in*)&listen_on_addr;
 		if (p < 1 || p > 65535)
 			syntax();
