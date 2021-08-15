@@ -159,4 +159,3 @@ main(int argc, char **argv)
 	libevent_global_shutdown();
 	return (0);
 }
-
